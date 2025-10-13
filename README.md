@@ -117,7 +117,7 @@ git push heroku main
 heroku open
 ```
 
-Swagger UI 접속: `https://your-app-name.herokuapp.com/swagger-ui.html`
+Swagger UI 접속: `https://zerobase-bookmark-service-0aab4ffd66ec.herokuapp.com/swagger-ui.html`
 
 ## API 엔드포인트
 

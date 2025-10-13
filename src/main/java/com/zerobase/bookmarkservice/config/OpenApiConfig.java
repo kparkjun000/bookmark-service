@@ -20,8 +20,8 @@ public class OpenApiConfig {
         localServer.setDescription("로컬 개발 서버");
         
         Server productionServer = new Server();
-        productionServer.setUrl("https://your-app-name.herokuapp.com");
-        productionServer.setDescription("프로덕션 서버");
+        productionServer.setUrl("https://zerobase-bookmark-service-0aab4ffd66ec.herokuapp.com");
+        productionServer.setDescription("프로덕션 서버 (Heroku)");
         
         Contact contact = new Contact();
         contact.setEmail("admin@bookmarkservice.com");
