@@ -1,0 +1,176 @@
+{
+  "name": "zero-base-13week-multiservice",
+  "description": "Zero Base 13주차 멀티서비스 모노레포 - 10개 독립 Spring Boot 서비스",
+  "stack": "heroku-24",
+  "services": {
+    "todo-api": {
+      "path": "01-todo-api",
+      "name": "zb-todo-api",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "blog-api": {
+      "path": "02-blog-api",
+      "name": "zb-blog-api",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "auth-system": {
+      "path": "03-auth-system",
+      "name": "zb-auth-system",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ],
+      "env": {
+        "JWT_SECRET": "your-jwt-secret-key-change-in-production"
+      }
+    },
+    "bookmark-service": {
+      "path": "04-bookmark-service",
+      "name": "zb-bookmark-service",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "shopping-api": {
+      "path": "05-shopping-api",
+      "name": "zb-shopping-api",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "memo-backend": {
+      "path": "06-memo-backend",
+      "name": "zb-memo-backend",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "weather-service": {
+      "path": "07-weather-service",
+      "name": "zb-weather-service",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ],
+      "env": {
+        "WEATHER_API_KEY": "your-weather-api-key"
+      }
+    },
+    "url-shortener": {
+      "path": "08-url-shortener",
+      "name": "zb-url-shortener",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    },
+    "survey-system": {
+      "path": "09-survey-system/survey-api",
+      "name": "zb-survey-system",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ],
+      "env": {
+        "JWT_SECRET": "your-jwt-secret-key-change-in-production"
+      }
+    },
+    "file-service": {
+      "path": "10-file-service",
+      "name": "zb-file-service",
+      "buildpack": "heroku/java",
+      "formation": {
+        "web": {
+          "quantity": 1,
+          "size": "basic"
+        }
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:mini"
+        }
+      ]
+    }
+  }
+}
