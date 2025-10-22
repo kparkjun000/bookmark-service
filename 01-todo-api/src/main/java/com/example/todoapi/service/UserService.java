@@ -1,7 +1,9 @@
 package com.example.todoapi.service;
 
 import com.example.todoapi.dto.UserDto;
+import com.example.todoapi.entity.Category;
 import com.example.todoapi.entity.User;
+import com.example.todoapi.repository.CategoryRepository;
 import com.example.todoapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,12 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CategoryRepository categoryRepository;
 
     public User register(UserDto.SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -33,7 +39,32 @@ public class UserService implements UserDetailsService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        return userRepository.save(user);
+        user = userRepository.save(user);
+        
+        // 기본 카테고리 자동 생성
+        createDefaultCategories(user);
+
+        return user;
+    }
+
+    private void createDefaultCategories(User user) {
+        List<String[]> defaultCategories = Arrays.asList(
+                new String[]{"개인", "개인적인 할 일", "#4F46E5"},
+                new String[]{"업무", "업무 관련 할 일", "#10B981"},
+                new String[]{"쇼핑", "쇼핑 목록", "#F59E0B"},
+                new String[]{"건강", "건강 및 운동", "#EF4444"},
+                new String[]{"학습", "공부 및 학습", "#8B5CF6"}
+        );
+
+        for (String[] categoryData : defaultCategories) {
+            Category category = Category.builder()
+                    .name(categoryData[0])
+                    .description(categoryData[1])
+                    .color(categoryData[2])
+                    .user(user)
+                    .build();
+            categoryRepository.save(category);
+        }
     }
 
     @Override

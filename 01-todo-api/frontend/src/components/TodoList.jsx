@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { todoAPI, categoryAPI } from "../services/api";
 import TodoItem from "./TodoItem";
 import TodoForm from "./TodoForm";
+import CategoryManager from "./CategoryManager";
 import "./Todo.css";
 
 function TodoList() {
@@ -135,6 +136,11 @@ function TodoList() {
           <div className="stat-label">완료</div>
         </div>
       </div>
+
+      <CategoryManager
+        categories={categories}
+        onCategoryAdded={fetchCategories}
+      />
 
       {showForm && (
         <div className="todo-form-wrapper">
