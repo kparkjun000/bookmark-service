@@ -22,10 +22,17 @@ function TodoForm({ todo, categories, onSubmit, onCancel }) {
     e.preventDefault();
 
     const submitData = {
-      ...formData,
+      title: formData.title,
+      description: formData.description || null,
+      priority: formData.priority,
       categoryId: formData.categoryId ? parseInt(formData.categoryId) : null,
-      dueDate: formData.dueDate || null,
+      dueDate: formData.dueDate ? `${formData.dueDate}T00:00:00` : null,
     };
+
+    // 수정 모드일 때만 completed 필드 추가
+    if (todo) {
+      submitData.completed = formData.completed;
+    }
 
     onSubmit(submitData);
   };
