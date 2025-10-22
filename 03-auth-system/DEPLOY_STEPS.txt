@@ -1,0 +1,69 @@
+==============================================
+  Heroku 수동 배포 단계 - 따라하기만 하세요!
+==============================================
+
+1단계: API Key 가져오기
+-----------------------
+1) 브라우저에서 https://dashboard.heroku.com/account 열기
+2) 로그인
+3) "API Key" 섹션 찾기
+4) "Reveal" 클릭
+5) 긴 문자열 복사 (예: HRKU-1234567890abcdef...)
+
+
+2단계: PowerShell에서 명령어 실행
+----------------------------------
+아래 명령어를 하나씩 복사해서 실행하세요:
+
+# API Key 설정 (YOUR_API_KEY를 복사한 키로 교체)
+$env:HEROKU_API_KEY="YOUR_API_KEY_HERE"
+
+# 인증 확인
+heroku auth:whoami
+
+# 앱 생성
+heroku create
+
+# PostgreSQL 추가
+heroku addons:create heroku-postgresql:essential-0
+
+# JWT Secret 설정
+$secret = -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 64 | ForEach-Object {[char]$_}); heroku config:set JWT_SECRET=$secret
+
+# 배포 (5-10분 소요)
+git push heroku master
+
+# 또는 main 브랜치인 경우:
+git push heroku main
+
+# 배포 후 Swagger UI 열기
+heroku open /swagger-ui.html
+
+
+============================================
+문제 해결
+============================================
+
+배포 실패 시:
+  heroku logs --tail
+
+앱 재시작:
+  heroku restart
+
+데이터베이스 확인:
+  heroku pg:info
+
+환경 변수 확인:
+  heroku config
+
+
+============================================
+완료 후 접속
+============================================
+
+앱 URL 확인:
+  heroku apps:info
+
+Swagger UI:
+  https://YOUR-APP-NAME.herokuapp.com/swagger-ui.html
+

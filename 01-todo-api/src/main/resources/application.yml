@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: todo-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todoapi
+    username: ${USER}
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+server:
+  port: 8080
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:mySecretKeyForJWTShouldBeAtLeast256BitsLongForHS256Algorithm}
+  expiration: 86400000 # 24 hours in milliseconds
+
+# Swagger Configuration
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs

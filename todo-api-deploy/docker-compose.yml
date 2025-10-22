@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: todo-postgres
+    environment:
+      POSTGRES_DB: todoapi
+      POSTGRES_USER: todouser
+      POSTGRES_PASSWORD: todopass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - todo-network
+
+  todo-api:
+    build: .
+    container_name: todo-api
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/todoapi
+      SPRING_DATASOURCE_USERNAME: todouser
+      SPRING_DATASOURCE_PASSWORD: todopass
+      JWT_SECRET: mySecretKeyForJWTShouldBeAtLeast256BitsLongForHS256Algorithm
+    ports:
+      - "8080:8080"
+    networks:
+      - todo-network
+
+volumes:
+  postgres_data:
+
+networks:
+  todo-network:
+    driver: bridge

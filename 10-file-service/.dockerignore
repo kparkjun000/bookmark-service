@@ -1,0 +1,14 @@
+target/
+!target/file-upload-service-1.0.0.jar
+.git
+.gitignore
+README.md
+*.md
+uploads/
+test-uploads/
+.idea
+.vscode
+*.iml
+.DS_Store
+Thumbs.db
+
