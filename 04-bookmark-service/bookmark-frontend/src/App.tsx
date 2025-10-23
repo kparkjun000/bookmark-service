@@ -1,246 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { User, Bookmark, Tag } from '../types/api';
-import { userApi, bookmarkApi, tagApi, publicApi } from '../services/api';
-import './App.css';
+import React from "react";
 
-const App: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [publicBookmarks, setPublicBookmarks] = useState<Bookmark[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'bookmarks' | 'public'>('users');
-
-  // 사용자 목록 로드
-  useEffect(() => {
-    loadUsers();
-    loadPublicBookmarks();
-  }, []);
-
-  const loadUsers = async () => {
-    try {
-      setLoading(true);
-      const userList = await userApi.getAllUsers();
-      setUsers(userList);
-      if (userList.length > 0 && !selectedUser) {
-        setSelectedUser(userList[0]);
-      }
-    } catch (err) {
-      setError('사용자 목록을 불러오는데 실패했습니다.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadPublicBookmarks = async () => {
-    try {
-      const response = await publicApi.getPublicBookmarks(0, 10);
-      setPublicBookmarks(response.content);
-    } catch (err) {
-      console.error('공개 북마크 로드 실패:', err);
-    }
-  };
-
-  const loadUserBookmarks = async (userId: number) => {
-    try {
-      setLoading(true);
-      const response = await bookmarkApi.getUserBookmarks(userId, 0, 20);
-      setBookmarks(response.content);
-    } catch (err) {
-      setError('북마크 목록을 불러오는데 실패했습니다.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadUserTags = async (userId: number) => {
-    try {
-      const tagList = await tagApi.getUserTags(userId);
-      setTags(tagList);
-    } catch (err) {
-      console.error('태그 로드 실패:', err);
-    }
-  };
-
-  const handleUserSelect = (user: User) => {
-    setSelectedUser(user);
-    loadUserBookmarks(user.id);
-    loadUserTags(user.id);
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const openBookmark = (url: string) => {
-    window.open(url, '_blank');
-  };
-
-  if (loading) {
-    return (
-      <div className="app">
-        <div className="loading">로딩 중...</div>
-      </div>
-    );
-  }
-
+function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>📚 Bookmark Service</h1>
-        <p>URL 북마크 관리 및 태그 서비스</p>
-      </header>
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "white",
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+      }}
+    >
+      <h1 style={{ fontSize: "3rem", marginBottom: "20px" }}>
+        📚 Bookmark Service
+      </h1>
 
-      <nav className="tab-nav">
-        <button 
-          className={activeTab === 'users' ? 'active' : ''} 
-          onClick={() => setActiveTab('users')}
-        >
-          👥 사용자 관리
-        </button>
-        <button 
-          className={activeTab === 'bookmarks' ? 'active' : ''} 
-          onClick={() => setActiveTab('bookmarks')}
-        >
-          🔖 북마크 관리
-        </button>
-        <button 
-          className={activeTab === 'public' ? 'active' : ''} 
-          onClick={() => setActiveTab('public')}
-        >
-          🌐 공개 북마크
-        </button>
-      </nav>
+      <p
+        style={{
+          fontSize: "1.2rem",
+          marginBottom: "30px",
+          textAlign: "center",
+        }}
+      >
+        URL 북마크 관리 및 태그 서비스
+      </p>
 
-      {error && (
-        <div className="error">
-          ❌ {error}
-          <button onClick={() => setError(null)}>닫기</button>
-        </div>
-      )}
+      <div
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          padding: "20px",
+          borderRadius: "10px",
+          marginBottom: "20px",
+          textAlign: "center",
+        }}
+      >
+        <h2>✅ 프론트엔드 정상 작동!</h2>
+        <p>React 앱이 성공적으로 로드되었습니다.</p>
+      </div>
 
-      <main className="app-main">
-        {activeTab === 'users' && (
-          <div className="users-section">
-            <h2>사용자 목록</h2>
-            <div className="user-list">
-              {users.map(user => (
-                <div 
-                  key={user.id} 
-                  className={`user-card ${selectedUser?.id === user.id ? 'selected' : ''}`}
-                  onClick={() => handleUserSelect(user)}
-                >
-                  <div className="user-info">
-                    <h3>{user.name}</h3>
-                    <p>{user.email}</p>
-                    <small>가입일: {formatDate(user.createdAt)}</small>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'bookmarks' && selectedUser && (
-          <div className="bookmarks-section">
-            <h2>{selectedUser.name}의 북마크</h2>
-            <div className="bookmark-list">
-              {bookmarks.map(bookmark => (
-                <div key={bookmark.id} className="bookmark-card">
-                  <div className="bookmark-header">
-                    <h3 onClick={() => openBookmark(bookmark.url)}>
-                      {bookmark.title || bookmark.url}
-                    </h3>
-                    <div className="bookmark-badges">
-                      {bookmark.isFavorite && <span className="badge favorite">⭐ 즐겨찾기</span>}
-                      {bookmark.isPublic && <span className="badge public">🌐 공개</span>}
-                    </div>
-                  </div>
-                  {bookmark.description && (
-                    <p className="bookmark-description">{bookmark.description}</p>
-                  )}
-                  <div className="bookmark-meta">
-                    <p className="bookmark-url" onClick={() => openBookmark(bookmark.url)}>
-                      🔗 {bookmark.url}
-                    </p>
-                    {bookmark.siteName && <p>📍 {bookmark.siteName}</p>}
-                    <p>📅 {formatDate(bookmark.createdAt)}</p>
-                  </div>
-                  {bookmark.tags.length > 0 && (
-                    <div className="bookmark-tags">
-                      {bookmark.tags.map(tag => (
-                        <span key={tag.id} className="tag">{tag.name}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'public' && (
-          <div className="public-section">
-            <h2>공개 북마크</h2>
-            <div className="bookmark-list">
-              {publicBookmarks.map(bookmark => (
-                <div key={bookmark.id} className="bookmark-card">
-                  <div className="bookmark-header">
-                    <h3 onClick={() => openBookmark(bookmark.url)}>
-                      {bookmark.title || bookmark.url}
-                    </h3>
-                    <div className="bookmark-badges">
-                      {bookmark.isFavorite && <span className="badge favorite">⭐ 즐겨찾기</span>}
-                      <span className="badge public">🌐 공개</span>
-                    </div>
-                  </div>
-                  {bookmark.description && (
-                    <p className="bookmark-description">{bookmark.description}</p>
-                  )}
-                  <div className="bookmark-meta">
-                    <p className="bookmark-url" onClick={() => openBookmark(bookmark.url)}>
-                      🔗 {bookmark.url}
-                    </p>
-                    {bookmark.siteName && <p>📍 {bookmark.siteName}</p>}
-                    <p>📅 {formatDate(bookmark.createdAt)}</p>
-                  </div>
-                  {bookmark.tags.length > 0 && (
-                    <div className="bookmark-tags">
-                      {bookmark.tags.map(tag => (
-                        <span key={tag.id} className="tag">{tag.name}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </main>
-
-      <footer className="app-footer">
+      <div
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          padding: "20px",
+          borderRadius: "10px",
+          marginBottom: "20px",
+          textAlign: "center",
+        }}
+      >
+        <h3>🔗 관련 링크</h3>
         <p>
-          🔗 <a href="https://zerobase-bookmark-service-0aab4ffd66ec.herokuapp.com/swagger-ui.html" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://zerobase-bookmark-service-0aab4ffd66ec.herokuapp.com/swagger-ui.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "white",
+              textDecoration: "underline",
+              marginRight: "20px",
+            }}
+          >
             Swagger UI
-          </a> | 
-          📊 <a href="https://github.com/kparkjun000/bookmark-service" target="_blank" rel="noopener noreferrer">
+          </a>
+          <a
+            href="https://github.com/kparkjun000/bookmark-service"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline" }}
+          >
             GitHub
           </a>
         </p>
-      </footer>
+      </div>
+
+      <div
+        style={{
+          background: "rgba(255, 255, 255, 0.1)",
+          padding: "20px",
+          borderRadius: "10px",
+          textAlign: "center",
+        }}
+      >
+        <h3>🧪 API 테스트</h3>
+        <button
+          onClick={async () => {
+            try {
+              const response = await fetch(
+                "https://zerobase-bookmark-service-0aab4ffd66ec.herokuapp.com/api/users"
+              );
+              const data = await response.json();
+              alert(
+                `API 연결 성공! 사용자 ${data.length}명: ${data
+                  .map((u) => u.name)
+                  .join(", ")}`
+              );
+            } catch (error) {
+              alert(`API 연결 실패: ${error}`);
+            }
+          }}
+          style={{
+            background: "rgba(255, 255, 255, 0.2)",
+            border: "none",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          🔄 API 연결 테스트
+        </button>
+      </div>
     </div>
   );
-};
+}
 
 export default App;
-

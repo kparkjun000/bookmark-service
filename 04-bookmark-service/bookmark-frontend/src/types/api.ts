@@ -50,4 +50,3 @@ export interface MetadataResponse {
   imageUrl?: string;
   siteName?: string;
 }
-
