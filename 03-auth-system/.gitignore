@@ -43,4 +43,7 @@ build/
 *.log
 logs/
 
+### Frontend ###
+auth-frontend/
+
 
