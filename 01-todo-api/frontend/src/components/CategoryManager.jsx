@@ -111,4 +111,3 @@ function CategoryManager({ categories, onCategoryAdded }) {
 }
 
 export default CategoryManager;
-

@@ -1,35 +1,18 @@
 /* App 전체 스타일 */
 .app {
   min-height: 100vh;
-  width: 100%;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-sizing: border-box;
-}
-
-/* 전체 화면 스타일 */
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
 }
 
 /* 헤더 스타일 */
 .app-header {
-  width: 100%;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   padding: 2rem;
   text-align: center;
   color: white;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-sizing: border-box;
 }
 
 .app-header h1 {
@@ -47,14 +30,12 @@ body {
 
 /* 네비게이션 탭 스타일 */
 .nav-tabs {
-  width: 100%;
   display: flex;
   justify-content: center;
   gap: 1rem;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  box-sizing: border-box;
 }
 
 .nav-tabs button {
@@ -84,24 +65,19 @@ body {
 
 /* 메인 콘텐츠 스타일 */
 .main-content {
-  width: 100vw;
-  max-width: none;
-  margin: 0;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
-  box-sizing: border-box;
 }
 
 /* 카테고리 및 게시글 리스트 공통 스타일 */
 .category-list,
 .post-list {
-  width: 100%;
-  max-width: none;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 15px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
-  box-sizing: border-box;
 }
 
 .header {
@@ -144,22 +120,19 @@ body {
 .form-group select {
   width: 100%;
   padding: 0.75rem;
-  border: 2px solid #b8e0ff;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease;
   box-sizing: border-box;
-  background-color: #f0f8ff;
-  color: #2c3e50;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #4facfe;
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.15);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 /* 버튼 스타일 */
@@ -176,20 +149,14 @@ body {
   text-align: center;
 }
 
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
 .btn-primary {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .btn-danger {
@@ -252,7 +219,7 @@ body {
 
 .post-info .author {
   font-weight: 600;
-  color: #4facfe;
+  color: #667eea;
 }
 
 .post-info .summary {
@@ -265,7 +232,7 @@ body {
   padding: 1rem;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 4px solid #4facfe;
+  border-left: 4px solid #667eea;
 }
 
 .post-info .meta {
@@ -294,7 +261,7 @@ body {
 }
 
 .category {
-  color: #4facfe;
+  color: #667eea;
   font-weight: 600;
 }
 
@@ -307,34 +274,19 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.health-check h2 {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.health-check h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #00b894;
-  font-size: 1.3rem;
-}
-
 .health-status {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: #f0fff4;
-  border-radius: 10px;
-  border: 2px solid #a8e6cf;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
 }
 
 .health-status pre {
   margin: 0;
-  margin-top: 1rem;
   white-space: pre-wrap;
   font-family: "Courier New", monospace;
   font-size: 0.9rem;
-  color: #2c3e50;
 }
 
 /* 에러 및 로딩 스타일 */

@@ -9,27 +9,13 @@ function App() {
     "categories"
   );
   const [healthStatus, setHealthStatus] = useState<any>(null);
-  const [healthLoading, setHealthLoading] = useState(false);
-  const [healthError, setHealthError] = useState<string | null>(null);
 
   const checkHealth = async () => {
     try {
-      setHealthLoading(true);
-      setHealthError(null);
-      console.log("헬스 체크 시작...");
       const status = await healthService.check();
-      console.log("헬스 체크 성공:", status);
       setHealthStatus(status);
-    } catch (error: any) {
-      console.error("헬스 체크 실패:", error);
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "서버에 연결할 수 없습니다.";
-      setHealthError(errorMessage);
-      setHealthStatus(null);
-    } finally {
-      setHealthLoading(false);
+    } catch (error) {
+      setHealthStatus({ error: "Health check failed" });
     }
   };
 
@@ -70,27 +56,11 @@ function App() {
         {activeTab === "health" && (
           <div className="health-check">
             <h2>시스템 상태 확인</h2>
-            <button
-              className="btn btn-primary"
-              onClick={checkHealth}
-              disabled={healthLoading}
-            >
-              {healthLoading ? "확인 중..." : "상태 확인"}
+            <button className="btn btn-primary" onClick={checkHealth}>
+              상태 확인
             </button>
-
-            {healthLoading && (
-              <div className="loading">서버 상태를 확인하는 중...</div>
-            )}
-
-            {healthError && (
-              <div className="error">
-                <strong>오류:</strong> {healthError}
-              </div>
-            )}
-
             {healthStatus && (
               <div className="health-status">
-                <h3>✅ 서버 정상 작동</h3>
                 <pre>{JSON.stringify(healthStatus, null, 2)}</pre>
               </div>
             )}
